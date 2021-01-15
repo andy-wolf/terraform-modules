@@ -44,10 +44,6 @@ resource "aws_iam_role_policy" "logging_role" {
   role = aws_iam_role.logging.id
 
   policy = data.aws_iam_policy_document.logging_role.json
-
-  tags = {
-    "Name" = "${var.name}-logging-role-policy"
-  }
 }
 
 data "aws_iam_policy_document" "logging_role" {
