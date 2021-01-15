@@ -9,7 +9,7 @@ variable "name" {
 
 variable "folders" {
   description = "Optional list of folders to create"
-  type = list(string)
+  type = set(string)
   default = []
 }
 
