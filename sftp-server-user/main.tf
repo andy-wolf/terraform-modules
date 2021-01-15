@@ -15,7 +15,7 @@ resource "aws_transfer_user" "user" {
   home_directory_type = "LOGICAL"
   home_directory_mappings {
     entry = "/"
-    target = "/${var.bucket_name}/sftp-server/${var.username}/"
+    target = "/${var.bucket_name}/sftp-server/${var.username}"
   }
 
   tags = {
