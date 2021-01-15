@@ -11,7 +11,7 @@ resource "aws_transfer_user" "user" {
   user_name = var.username
   role      = aws_iam_role.user_role.arn
 
-  home_directory = "${var.bucket_name}/sftp-server/${var.username}/"
+  home_directory = "/${var.bucket_name}/sftp-server/${var.username}/"
   home_directory_type = "LOGICAL"
 
   tags = {
