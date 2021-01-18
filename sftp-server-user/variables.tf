@@ -13,8 +13,13 @@ variable "server_id" {
   default     = ""
 }
 
-variable "bucket_name" {
+variable "data_bucket_name" {
   description = "Name of the S3 bucket used as data backend"
+  type        = string
+}
+
+variable "config_bucket_name" {
+  description = "Name of the S3 bucket used as config backend"
   type        = string
 }
 
