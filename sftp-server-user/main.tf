@@ -129,7 +129,7 @@ resource "aws_iam_role_policy" "user_role_kms_policy" {
               "kms:Encrypt",
               "kms:GenerateDataKey"
             ],
-            "Resource": "arn:aws:kms:${data.aws_region.current}:${data.aws_caller_identity.current}:key/${var.data_bucket_master_key_id}"
+            "Resource": "arn:aws:kms:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:key/${var.data_bucket_master_key_id}"
         }
     ]
 }
