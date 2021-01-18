@@ -113,8 +113,8 @@ resource "aws_s3_bucket_object" "users_private_key" {
 
 */
 
-resource "aws_iam_role_policy" "user_role_policy" {
-  name = "${var.server_id}-user-role-policy-${var.username}"
+resource "aws_iam_role_policy" "user_role_kms_policy" {
+  name = "${var.server_id}-user-role-kms-policy-${var.username}"
   role = aws_iam_role.user_role.id
 
   policy = <<POLICY
