@@ -79,7 +79,7 @@ resource "aws_transfer_ssh_key" "users_public_key" {
 
 resource "aws_s3_bucket_object" "users_public_key" {
   bucket = var.config_bucket_name
-  key    = "/sftp-server/${username}/${username}_rsa4096.pub"
+  key    = "/sftp-server/${var.username}/${var.username}_rsa4096.pub"
   content = tls_private_key.users_key_pair.public_key_pem
 
   ### Optional as long as S3 bucket has server-side encryption enabled by default
@@ -90,6 +90,6 @@ resource "aws_s3_bucket_object" "users_public_key" {
 
 resource "aws_s3_bucket_object" "users_private_key" {
   bucket = var.config_bucket_name
-  key    = "/sftp-server/${username}/${username}_rsa4096.private.pem"
+  key    = "/sftp-server/${var.username}/${var.username}_rsa4096.private.pem"
   content = tls_private_key.users_key_pair.private_key_pem
 }
