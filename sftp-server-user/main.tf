@@ -72,7 +72,7 @@ resource "tls_private_key" "users_key_pair" {
 }
 
 resource "aws_transfer_ssh_key" "users_public_key" {
-  body      = tls_private_key.users_key_pair.public_key_pem
+  body      = tls_private_key.users_key_pair.public_key_openssh
   server_id = var.server_id
   user_name = aws_transfer_user.user.user_name
 }
