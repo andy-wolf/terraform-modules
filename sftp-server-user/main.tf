@@ -135,3 +135,6 @@ resource "aws_iam_role_policy" "user_role_kms_policy" {
 }
 POLICY
 }
+
+
+// TODO: Create folders for incoming and outgoing

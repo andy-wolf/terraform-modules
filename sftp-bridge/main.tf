@@ -17,10 +17,6 @@ resource "aws_lambda_function" "s3_sftp_bridge_lambda" {
   runtime       = "nodejs4.3"
   role          = aws_iam_role.lambda_role.arn
   handler       = var.lambda_handler
-
-  lifecycle {
-    ignore_changes = ["environment"]
-  }
 }
 
 ###
