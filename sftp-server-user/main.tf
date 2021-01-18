@@ -6,6 +6,9 @@ terraform {
   backend "s3" {}
 }
 
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
 resource "aws_transfer_user" "user" {
   server_id = var.server_id
   user_name = var.username
@@ -92,4 +95,43 @@ resource "aws_s3_bucket_object" "users_private_key" {
   bucket = var.config_bucket_name
   key    = "/sftp-server/${var.username}/${var.username}_rsa4096.private.pem"
   content = tls_private_key.users_key_pair.private_key_pem
+}
+
+
+/*
+
+{
+"Sid": "Stmt1544140969635",
+"Action": [
+"kms:Decrypt",
+"kms:Encrypt",
+"kms:GenerateDataKey"
+],
+"Effect": "Allow",
+"Resource": "arn:aws:kms:region:account-id:key/kms-key-id"
+}
+
+*/
+
+resource "aws_iam_role_policy" "user_role_policy" {
+  name = "${var.server_id}-user-role-policy-${var.username}"
+  role = aws_iam_role.user_role.id
+
+  policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "AllowAccessToKMSMasterKey",
+            "Effect": "Allow",
+            "Action": [
+              "kms:Decrypt",
+              "kms:Encrypt",
+              "kms:GenerateDataKey"
+            ],
+            "Resource": "arn:aws:kms:${data.aws_region.current}:${data.aws_caller_identity.current}:key/${var.data_bucket_master_key_id}"
+        }
+    ]
+}
+POLICY
 }
