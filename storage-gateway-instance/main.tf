@@ -22,8 +22,12 @@ resource "aws_instance" "storage_gateway_instance" {
   //key_name = var.key_name
   //subnet_id = var.public_subnets[0]
   //associate_public_ip_address = true
-
-  security_groups = [aws_security_group.http_from_local.id, aws_security_group.ssh_from_local.id]
+  availability_zone = "eu-central-1a"
+  security_groups = [
+    aws_security_group.http_from_local.name,
+    aws_security_group.ssh_from_local.name,
+    aws_security_group.nfs_from_local.name
+  ]
 
   tags = {
     "Name" = var.name
