@@ -26,7 +26,8 @@ resource "aws_instance" "storage_gateway_instance" {
   security_groups = [
     aws_security_group.http_from_local.name,
     aws_security_group.ssh_from_local.name,
-    aws_security_group.nfs_from_local.name
+    aws_security_group.nfs_from_local.name,
+    aws_security_group.http_to_anywhere.name
   ]
 
   tags = {
@@ -116,20 +117,59 @@ resource "aws_security_group" "http_from_local" {
   }
 }
 
+// 2049, 20048, 111
 resource "aws_security_group" "nfs_from_local" {
   name        = "nfs-from-local"
-  description = "Allow SSH access only from local machine"
+  description = "Allow NFS access only from local machine"
 
   //vpc_id = var.vpc_id
 
   ingress {
-    from_port   = 22
-    to_port     = 22
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    cidr_blocks = [local.local_ip_address]
+  }
+
+  ingress {
+    from_port   = 20048
+    to_port     = 20048
+    protocol    = "tcp"
+    cidr_blocks = [local.local_ip_address]
+  }
+
+  ingress {
+    from_port   = 111
+    to_port     = 111
     protocol    = "tcp"
     cidr_blocks = [local.local_ip_address]
   }
 
   tags = {
     Name = "nfs-from-local"
+  }
+}
+
+resource "aws_security_group" "http_to_anywhere" {
+  name        = "http-to-anywhere"
+  description = "Allow HTTP and HTTPS access to anywhere"
+
+
+  egress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "http-to-anywhere"
   }
 }
