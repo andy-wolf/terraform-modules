@@ -25,6 +25,13 @@ resource "aws_storagegateway_gateway" "example" {
   gateway_name     = "example"
   gateway_timezone = "GMT"
   gateway_type     = "FILE_S3"
+
+/*
+  # There is no Storage Gateway API for reading gateway_ip_address
+  lifecycle {
+    ignore_changes = ["gateway_ip_address"]
+  }
+*/
 }
 
 data "aws_storagegateway_local_disk" "example" {

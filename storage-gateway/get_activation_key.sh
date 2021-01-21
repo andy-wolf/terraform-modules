@@ -34,6 +34,10 @@ function return_activation_key() {
   fi
 
   KEY=$(echo "$activation_key_param" | cut -f2 -d=)
+
+  jq -n \
+  --arg key "$KEY" \
+  '{"key":$key}'
 }
 
 
