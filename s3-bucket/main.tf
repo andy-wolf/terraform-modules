@@ -56,12 +56,10 @@ resource "aws_s3_bucket" "this" {
 # Create empty folders
 resource "aws_s3_bucket_object" "folders" {
   for_each = var.folders
-  #count = length(var.folders)
 
   bucket = aws_s3_bucket.this.id
   acl     = "private"
 
-  #key = "${trimsuffix(element(var.folders, count.index), "/")}/"
   key = "${trimsuffix(each.value, "/")}/"
 
   content_type = "application/x-directory"

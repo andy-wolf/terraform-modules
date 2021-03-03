@@ -14,7 +14,6 @@ resource "aws_transfer_user" "user" {
   user_name = var.username
   role      = aws_iam_role.user_role.arn
 
-  #home_directory = "/${var.bucket_name}/sftp-server/${var.username}/"
   home_directory_type = "LOGICAL"
   home_directory_mappings {
     entry = "/"
@@ -80,38 +79,17 @@ resource "aws_transfer_ssh_key" "users_public_key" {
   user_name = aws_transfer_user.user.user_name
 }
 
-resource "aws_s3_bucket_object" "users_public_key" {
-  bucket = var.config_bucket_name
-  key    = "/sftp-server/${var.username}/${var.username}_rsa4096.pub"
-  content = tls_private_key.users_key_pair.public_key_pem
-
-  ### Optional as long as S3 bucket has server-side encryption enabled by default
-  #kms_key_id = var.kms_key_arn
-  #server_side_encryption = "aws:kms"
-  #server_side_encryption = "AES256"
+resource "aws_ssm_parameter" "users_public_key" {
+  name = "/sftp-server/${var.username}/${var.username}_rsa4096.pub"
+  type = "String"
+  value = tls_private_key.users_key_pair.public_key_pem
 }
 
-resource "aws_s3_bucket_object" "users_private_key" {
-  bucket = var.config_bucket_name
-  key    = "/sftp-server/${var.username}/${var.username}_rsa4096.private.pem"
-  content = tls_private_key.users_key_pair.private_key_pem
+resource "aws_ssm_parameter" "users_private_key" {
+  name = "/sftp-server/${var.username}/${var.username}_rsa4096.private.pem"
+  type = "SecureString"
+  value = tls_private_key.users_key_pair.private_key_pem
 }
-
-
-/*
-
-{
-"Sid": "Stmt1544140969635",
-"Action": [
-"kms:Decrypt",
-"kms:Encrypt",
-"kms:GenerateDataKey"
-],
-"Effect": "Allow",
-"Resource": "arn:aws:kms:region:account-id:key/kms-key-id"
-}
-
-*/
 
 resource "aws_iam_role_policy" "user_role_kms_policy" {
   name = "${var.server_id}-user-role-kms-policy-${var.username}"

@@ -6,13 +6,11 @@ terraform {
   backend "s3" {}
 }
 
-
 // Determine correct AMI to use
+// e.g. aws-storage-gateway-1599010968 - ami-08254028c01ad6e2e
 data "aws_ssm_parameter" "image_id" {
-  // E.g. aws-storage-gateway-1599010968 - ami-08254028c01ad6e2e
   name = "/aws/service/storagegateway/ami/FILE_S3/latest"
 }
-
 
 // Create new EC2 instance based o this AMI image
 resource "aws_instance" "storage_gateway_instance" {
@@ -22,7 +20,7 @@ resource "aws_instance" "storage_gateway_instance" {
   //key_name = var.key_name
   //subnet_id = var.public_subnets[0]
   //associate_public_ip_address = true
-  availability_zone = "eu-central-1a"
+  availability_zone = "eu-central-1a"   // TODO: Parameterize
   security_groups = [
     aws_security_group.http_from_local.name,
     aws_security_group.ssh_from_local.name,
@@ -38,7 +36,7 @@ resource "aws_instance" "storage_gateway_instance" {
 
 // Additional disk for caching
 resource "aws_ebs_volume" "data_cache" {
-  availability_zone = "eu-central-1a"   // Fixed AZ necessary !?
+  availability_zone = "eu-central-1a"   // TODO: Fixed AZ necessary !?
   size              = 50
 
   tags = {
@@ -52,7 +50,7 @@ resource "aws_volume_attachment" "data_cache" {
   instance_id = aws_instance.storage_gateway_instance.id
 }
 
-// No need for a key pair???
+// TODO: No need for a key pair???
 
 
 
@@ -153,7 +151,6 @@ resource "aws_security_group" "nfs_from_local" {
 resource "aws_security_group" "http_to_anywhere" {
   name        = "http-to-anywhere"
   description = "Allow HTTP and HTTPS access to anywhere"
-
 
   egress {
     from_port   = 80
