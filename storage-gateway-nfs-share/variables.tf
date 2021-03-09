@@ -17,6 +17,16 @@ variable "data_bucket_arn" {
   type = string
 }
 
+variable "kms_key_id" {
+  description = "KMS key used for encrypting objects in S3 bucket"
+  type = string
+}
+
+variable "kms_key_arn" {
+  description = "KMS key used for encrypting objects in S3 bucket"
+  type = string
+}
+
 variable "tags" {
   description = "Tags to apply to resource"
   type        = map(string)

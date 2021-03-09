@@ -6,7 +6,8 @@ terraform {
   backend "s3" {}
 }
 
-// TODO: ARN of KMS-Key used for encryption
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
 
 resource "aws_storagegateway_nfs_file_share" "this" {
   client_list  = ["0.0.0.0/0"]
@@ -15,21 +16,19 @@ resource "aws_storagegateway_nfs_file_share" "this" {
   role_arn     = aws_iam_role.transfer-role.arn
 
   // Give bucket owner full control
-  //ObjectACL='bucket-owner-full-control'
+  object_acl = "bucket-owner-full-control"
 
   // Automated cache refresh from S3 after
-  //cache_attributes
-  //cache_stale_timeout_in_seconds = 300
-  //CacheAttributes={
-  //  'CacheStaleTimeoutInSeconds': 123
-  //}
+  cache_attributes {
+    cache_stale_timeout_in_seconds = 300
+  }
 
   // KMS-Managed Keys (SSE-KMS)
-  //kms_encrypted = true
-  //kms_key_arn = var.kms_key_arn
+  kms_encrypted = true
+  kms_key_arn = var.kms_key_arn
 
   // export path
-  //file_share_name = "/data"
+  file_share_name = "data"
 }
 
 resource "aws_iam_role" "transfer-role" {
@@ -91,6 +90,20 @@ data "aws_iam_policy_document" "transfer-s3-policy" {
 
     resources = [
       "${var.data_bucket_arn}/*",
+    ]
+
+    effect = "Allow"
+  }
+
+  statement {
+    actions = [
+      "kms:Decrypt",
+      "kms:Encrypt",
+      "kms:GenerateDataKey"
+    ]
+
+    resources = [
+      "arn:aws:kms:${data.aws_region.current.id}:${data.aws_caller_identity.current.account_id}:key/${var.kms_key_id}"
     ]
 
     effect = "Allow"

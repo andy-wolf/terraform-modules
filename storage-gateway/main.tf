@@ -9,10 +9,10 @@ terraform {
 resource "aws_storagegateway_gateway" "this" {
   gateway_ip_address = var.gateway_ip
   gateway_name     = "storage-gateway"
-  gateway_timezone = "GMT"    // TODO: Validate
+  gateway_timezone = "GMT"
   gateway_type     = "FILE_S3"
 
-  // TODO: Log group
+  cloudwatch_log_group_arn = aws_cloudwatch_log_group.storage_gateway.arn
 
   # There is no Storage Gateway API for reading gateway_ip_address
   lifecycle {
@@ -30,9 +30,9 @@ resource "aws_storagegateway_cache" "this" {
   gateway_arn = aws_storagegateway_gateway.this.arn
 }
 
-
-// CloudWatch log group
-
+resource "aws_cloudwatch_log_group" "storage_gateway" {
+  name = "storage-gateway-log-group"
+}
 
 
 
