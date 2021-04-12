@@ -1,5 +1,6 @@
 # terraform-modules
 
+This is a collection of various terraform modules I use for some of my projects.
 ## Structure
 
     ├── module_name
