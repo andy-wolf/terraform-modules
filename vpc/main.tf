@@ -81,7 +81,7 @@ module "vpc" {
   database_subnet_tags = { "Name" = "${var.name}-db-subnet" }
   database_acl_tags = { "Name" = "${var.name}-db-acl" }
   database_route_table_tags = { "Name" = "${var.name}-db-rt" }
-  vpc_tags = { "Name" = "${var.name}" }
+  vpc_tags = { "Name" = var.name }
 #  vpc_endpoint_tags = { "Name" = "${var.name}-vpc-endpoint" }
 }
 

@@ -11,7 +11,7 @@ resource "aws_ssm_parameter" "database_url" {
   value = "jdbc:mysql://${aws_db_instance.my_database.endpoint}/${aws_db_instance.my_database.name}?useSSL=false&serverTimezone=UTC"
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
   }
 }
 
@@ -21,7 +21,7 @@ resource "aws_ssm_parameter" "database_user_name" {
   value = aws_db_instance.my_database.username
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
   }
 }
 
@@ -31,7 +31,7 @@ resource "aws_ssm_parameter" "database_user_password" {
   value = aws_db_instance.my_database.password
 
   tags = {
-    environment = "${var.environment}"
+    environment = var.environment
   }
 }
 

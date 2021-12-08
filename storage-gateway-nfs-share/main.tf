@@ -69,7 +69,7 @@ data "aws_iam_policy_document" "transfer-s3-policy" {
     ]
 
     resources = [
-      "${var.data_bucket_arn}",
+      var.data_bucket_arn}
     ]
 
     effect = "Allow"

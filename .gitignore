@@ -5,3 +5,4 @@ terraform.tfstate
 *.tfstate*
 OLD-terraform.tfvars
 
+/playground/
