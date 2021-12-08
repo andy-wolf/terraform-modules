@@ -16,7 +16,7 @@ resource "aws_db_instance" "my_database" {
   password                    = var.user_password
   parameter_group_name        = "default.mysql5.7"  // TODO: Make configurable with defaults
   db_subnet_group_name        = var.database_subnet_group
-  vpc_security_group_ids      = [module.rds-security-group.this_security_group_id]
+  vpc_security_group_ids      = [module.rds-security-group.security_group_id]
   allow_major_version_upgrade = var.allow_major_version_upgrade
   auto_minor_version_upgrade  = var.auto_minor_version_upgrade
   backup_retention_period     = var.backup_retention_period

@@ -45,7 +45,7 @@ module "ecs_sg" {
       to_port                  = "65535"
       protocol                 = "tcp"
       description              = "Access from load balancer"
-      source_security_group_id = module.alb_sg.this_security_group_id
+      source_security_group_id = module.alb_sg.security_group_id
     }
   ]
 
@@ -71,8 +71,8 @@ resource "aws_security_group_rule" "ecs_instances_to_alb" {
   protocol    = "tcp"
   description = "Access from ECS instances"
 
-  security_group_id        = module.alb_sg.this_security_group_id
-  source_security_group_id = module.ecs_sg.this_security_group_id
+  security_group_id        = module.alb_sg.security_group_id
+  source_security_group_id = module.ecs_sg.security_group_id
 }
 */
 
@@ -90,7 +90,7 @@ module "endpoints-sg" {
       to_port                  = 443
       protocol                 = "tcp"
       description              = "VPC-Endpoints"
-      source_security_group_id = module.ecs_sg.this_security_group_id
+      source_security_group_id = module.ecs_sg.security_group_id
     },
   ]
 
