@@ -3,7 +3,7 @@
 ###################
 module "efs_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "v3.9.0"
+  version = "4.7.0"
 
   name        = "${var.name}-efs-sg"
   vpc_id      = var.vpc_id

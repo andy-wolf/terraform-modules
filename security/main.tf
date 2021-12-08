@@ -12,7 +12,7 @@ resource "aws_key_pair" "mysshkey" {
 
 module "alb_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "v3.9.0"
+  version = "4.7.0"
 
   name        = "${var.name}-alb-sg"
   vpc_id      = var.vpc_id
@@ -32,7 +32,7 @@ module "alb_sg" {
 
 module "ecs_sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "v3.9.0"
+  version = "4.7.0"
 
   name        = "${var.name}-ecs-sg"
   vpc_id      = var.vpc_id
@@ -78,7 +78,7 @@ resource "aws_security_group_rule" "ecs_instances_to_alb" {
 
 module "endpoints-sg" {
   source  = "terraform-aws-modules/security-group/aws"
-  version = "v3.9.0"
+  version = "4.7.0"
 
   name        = "${var.name}-endpoints-sg"
   vpc_id      = var.vpc_id

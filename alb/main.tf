@@ -7,7 +7,7 @@ terraform {
 
 module "alb" {
   source  = "terraform-aws-modules/alb/aws"
-  version = "v5.5.0"
+  version = "6.6.1"
 
   name     = var.name
   internal = false

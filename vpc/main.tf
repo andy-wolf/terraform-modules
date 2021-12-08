@@ -7,7 +7,7 @@ terraform {
 
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "v2.33.0"
+  version = "3.11.0"
 
   create_vpc = true
 
