@@ -1,11 +1,16 @@
+###################
+# versions.tf
+###################
+
 terraform {
+  required_version = ">= 0.13"
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
     }
     http = {
       source = "hashicorp/http"
     }
   }
-  required_version = ">= 0.13"
 }
