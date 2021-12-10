@@ -42,7 +42,7 @@ data "aws_iam_policy_document" "ecs_task_role_policy" {
     }
   }
 
-  statement {
+/*  statement {
     sid = "4"
 
     actions = [
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "ecs_task_role_policy" {
         "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${var.name}-task-role"
       ]
     }
-  }
+  }*/
 }
 
 /*
@@ -121,7 +121,9 @@ resource "aws_iam_role_policy_attachment" "ecs_task_role_parameter_store_policy_
  */
 resource "aws_iam_role_policy_attachment" "ecs_task_role_container_service_policy_attachment" {
   role = aws_iam_role.ecs_task_role.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess"
+  #policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerServiceFullAccess"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonECS_FullAccess"
+
 }
 
 /*
