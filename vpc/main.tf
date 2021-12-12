@@ -72,10 +72,18 @@ module "vpc" {
   igw_tags = { "Name" = "${var.name}-igw" }
   nat_gateway_tags = { "Name" = "${var.name}-nat-gw" }
   nat_eip_tags = { "Name" = "${var.name}-nat-eip" }
-  private_subnet_tags = { "Name" = "${var.name}-private-subnet" }
+  private_subnet_tags = {
+    "Name" = "${var.name}-private-subnet"
+    "kubernetes.io/cluster/${var.name}-cluster" = "shared"
+    "kubernetes.io/role/internal-elb"           = "1"
+  }
   private_acl_tags = { "Name" = "${var.name}-private-acl" }
   private_route_table_tags = { "Name" = "${var.name}-private-rt" }
-  public_subnet_tags = { "Name" = "${var.name}-public-subnet" }
+  public_subnet_tags = {
+    "Name" = "${var.name}-public-subnet"
+    "kubernetes.io/cluster/${var.name}-cluster" = "shared"
+    "kubernetes.io/role/elb"                    = "1"
+  }
   public_acl_tags = { "Name" = "${var.name}-public-acl" }
   public_route_table_tags = { "Name" = "${var.name}-public-rt" }
   database_subnet_tags = { "Name" = "${var.name}-db-subnet" }
